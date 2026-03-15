@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Thêm nguyên liệu mới</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f4f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2c3e50;
+    }
+
+    form label {
+      display: block;
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    form input[type="text"],
+    form input[type="number"],
+    form input[type="file"],
+    form textarea,
+    form select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+      transition: border-color 0.2s;
+    }
+
+    form input:focus,
+    form textarea:focus,
+    form select:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .button-group {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    button[type="submit"] {
+      background-color: #3498db;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #2980b9;
+    }
+
+    a.back-link {
+      text-decoration: none;
+      color: #3498db;
+      font-weight: 500;
+    }
+
+    a.back-link:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .button-group {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      button[type="submit"], a.back-link {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Thêm nguyên liệu mới</h1>
+  <form th:action="@{/ingredients/create}" th:object="${ingredient}" method="post" enctype="multipart/form-data" id="ingredientForm">
+    <label for="name">Tên nguyên liệu:</label>
+    <input type="text" th:field="*{name}" id="name" required />
+
+    <label for="description">Mô tả:</label>
+    <textarea th:field="*{description}" id="description"></textarea>
+
+    <label for="imageFile">Chọn ảnh:</label>
+    <input type="file" name="imageFile" id="imageFile" accept="image/*" />
+
+    <label for="price">Giá:</label>
+    <input type="number" th:field="*{price}" id="price" step="0.01" required />
+
+    <label for="quantity">Số lượng:</label>
+    <input type="number" th:field="*{quantity}" id="quantity" min="0" required />
+
+    <label for="category">Danh mục:</label>
+    <select th:field="*{category.categoryId}" id="category">
+      <option th:each="cat : ${categories}" th:value="${cat.categoryId}" th:text="${cat.name}"></option>
+    </select>
+
+    <div class="button-group">
+      <button type="submit">Tạo mới</button>
+      <a class="back-link" th:href="@{/ingredients}">← Quay lại danh sách</a>
+      <a class="back-link" th:href="@{/login}" style="color: #e74c3c;">Thoát</a>
+    </div>
+  </form>
+</div>
+</body>
+</html>

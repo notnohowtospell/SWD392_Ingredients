@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết nguyên liệu</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+        }
+
+        .image-section {
+            flex: 1;
+            background-color: #f0f0f0;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .info-section {
+            flex: 2;
+            padding: 40px;
+        }
+
+        .info-section h1 {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        .info-section p {
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        .info-section strong {
+            display: inline-block;
+            width: 120px;
+            color: #555;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-link:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .image-section, .info-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="image-section">
+        <img th:src="${ingredient.image}" alt="Hình ảnh nguyên liệu" />
+    </div>
+    <div class="info-section">
+        <h1 th:text="${ingredient.name}">Tên nguyên liệu</h1>
+        <p><strong>Mô tả:</strong> <span th:text="${ingredient.description}">Mô tả</span></p>
+        <p><strong>Giá:</strong> <span th:text="${ingredient.price}">0</span> VNĐ</p>
+        <p><strong>Số lượng:</strong> <span th:text="${ingredient.quantity}">0</span></p>
+        <p><strong>Danh mục:</strong> <span th:text="${ingredient.category != null ? ingredient.category.name : ''}">Không có</span></p>
+        <a class="back-link" th:href="@{/ingredients}">← Quay lại danh sách</a>
+    </div>
+</div>
+</body>
+</html>

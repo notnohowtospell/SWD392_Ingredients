@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách nguyên liệu</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+        }
+
+        header, footer {
+            background: #2d3436;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 28px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .alert {
+            padding: 10px 16px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+
+        .alert-success { background: #d4edda; color: #155724; }
+        .alert-error { background: #f8d7da; color: #721c24; }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        form input,
+        form select {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+
+        form button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        a.button {
+            display: inline-block;
+            margin: 16px 0;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        a.button:hover {
+            background-color: #218838;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+            font-size: 15px;
+        }
+
+        th {
+            background-color: #f1f3f4;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        td img {
+            max-width: 60px;
+            border-radius: 4px;
+        }
+
+        .actions a {
+            margin-right: 8px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .actions a:hover {
+            text-decoration: underline;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .pagination span {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .pagination a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        .pagination a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .pagination {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Ingredient Shop</h1>
+    <a th:href="@{/cart}" style="position: absolute; top: 20px; right: 20px;">
+        <img th:src="@{/images/cart.png}" alt="Cart" style="width: 36px; height: 36px;" />
+    </a>
+</header>
+<main>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+    <h2 style="display: flex; justify-content: space-between; align-items: center;">
+        Danh sách nguyên liệu
+        <a th:href="@{/cart}" title="Xem giỏ hàng" style="text-decoration: none;">
+            <img src="/images/cart.png" alt="Cart" style="width: 32px; height: 32px;">
+        </a>
+    </h2>
+
+    <form method="get" th:action="@{/search}">
+        <input type="hidden" name="sort" th:value="${sortBy}" />
+        <input type="hidden" name="dir" th:value="${dir}" />
+
+        <input type="text" name="keyword" placeholder="Tìm theo tên..." th:value="${keyword}" />
+        <select name="categoryId">
+            <option value="">Tất cả danh mục</option>
+            <option th:each="cat : ${categories}"
+                    th:value="${cat.categoryId}"
+                    th:text="${cat.name}"
+                    th:selected="${cat.categoryId} == ${categoryId}"></option>
+        </select>
+        <button type="submit">Tìm kiếm</button>
+    </form>
+
+
+    <table>
+        <thead>
+        <tr>
+            <th th:if="${categoryId != null}">
+                <a th:href="@{|/search?page=0&sort=name&dir=${sort == 'name' and dir == 'asc' ? 'desc' : 'asc'}&keyword=${keyword}&categoryId=${categoryId}|}">
+                    Tên
+                </a>
+            </th>
+            <th th:if="${categoryId == null}">
+                <a th:href="@{|/search?page=0&sort=name&dir=${sort == 'name' and dir == 'asc' ? 'desc' : 'asc'}&keyword=${keyword}|}">
+                    Tên
+                </a>
+            </th>
+            <th>Hình ảnh</th>
+            <th>Mô tả</th>
+            <th th:if="${categoryId != null}">
+                <a th:href="@{|/search?page=0&sort=price&dir=${sort == 'price' and dir == 'asc' ? 'desc' : 'asc'}&keyword=${keyword}&categoryId=${categoryId}|}">
+                    Giá
+                </a>
+            </th>
+            <th  th:if="${categoryId == null}">
+                <a th:href="@{|/search?page=0&sort=price&dir=${sort == 'price' and dir == 'asc' ? 'desc' : 'asc'}&keyword=${keyword}|}">
+                    Giá
+                </a>
+            </th>
+            <th>Số lượng</th>
+            <th>Danh mục</th>
+            <th>Thêm vào giỏ</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ingredient : ${ingredientPage.content}">
+            <td th:text="${ingredient.name}"></td>
+            <td th:if="${ingredient.image != null && !ingredient.image.isEmpty()}">
+                <img th:src="${ingredient.image}" alt="image" />
+            </td>
+            <td th:if="${ingredient.image == null || ingredient.image.isEmpty()}">
+                <img th:src="@{/images/flour.jpg}" alt="image" />
+            </td>
+            <td th:text="${ingredient.description}"></td>
+            <td th:text="${ingredient.price} + ' VNĐ'"></td>
+            <td th:text="${ingredient.quantity}"></td>
+            <td th:text="${ingredient.category != null ? ingredient.category.name : 'Không có'}"></td>
+            <td>
+                <form class="add-to-cart-form" th:action="@{/cart/addAjax}" method="post" onsubmit="return confirmAddToCart(this)">
+                    <input type="hidden" name="ingredientId" th:value="${ingredient.ingredientId}" />
+                    <input type="number" name="quantity" value="1" min="1" style="width: 60px;" />
+                    <button type="submit" style="background-color: #ffa500; color: white; border: none; padding: 6px 10px; border-radius: 4px;">
+                        Add to Cart
+                    </button>
+                </form>
+                <div class="add-result"></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <span th:text="'Trang ' + (${ingredientPage.number + 1}) + ' / ' + ${ingredientPage.totalPages}"></span>
+        <div>
+            <!-- ← Previous -->
+            <a th:if="${ingredientPage.hasPrevious()} and ${categoryId != null}"
+               th:href="@{|/search?page=${ingredientPage.number - 1}&sort=${sortBy}&dir=${dir}&keyword=${keyword}&categoryId=${categoryId}|}">
+                ← Trước
+            </a>
+            <a th:if="${ingredientPage.hasPrevious()} and ${categoryId == null}"
+               th:href="@{|/search?page=${ingredientPage.number - 1}&sort=${sortBy}&dir=${dir}&keyword=${keyword}|}">
+                ← Trước
+            </a>
+
+            <!-- → Next -->
+            <a th:if="${ingredientPage.hasNext()} and ${categoryId != null}"
+               th:href="@{|/search?page=${ingredientPage.number + 1}&sort=${sortBy}&dir=${dir}&keyword=${keyword}&categoryId=${categoryId}|}">
+                Sau →
+            </a>
+            <a th:if="${ingredientPage.hasNext()} and ${categoryId == null}"
+               th:href="@{|/search?page=${ingredientPage.number + 1}&sort=${sortBy}&dir=${dir}&keyword=${keyword}|}">
+                Sau →
+            </a>
+        </div>
+    </div>
+
+
+</main>
+<footer>
+    <p>© 2025 Ingredient Shop</p>
+</footer>
+<script>
+    function confirmAddToCart(form) {
+        const quantity = form.querySelector('input[name="quantity"]').value;
+
+        if (!confirm(`Thêm ${quantity} sản phẩm vào giỏ?`)) {
+            return false;
+        }
+
+        const formData = new FormData(form);
+        const actionUrl = form.getAttribute("action");
+
+        fetch(actionUrl, {
+            method: "POST",
+            body: new URLSearchParams(formData)
+        })
+            .then(response => response.text())
+            .then(message => {
+                const resultDiv = form.nextElementSibling; // .add-result div
+                resultDiv.innerText = message;
+                resultDiv.style.color = "green";
+            })
+            .catch(error => {
+                const resultDiv = form.nextElementSibling;
+                resultDiv.innerText = "❌ Error adding to cart";
+                resultDiv.style.color = "red";
+            });
+
+        return false; // Stop normal form submission
+    }
+</script>
+</body>
+</html>

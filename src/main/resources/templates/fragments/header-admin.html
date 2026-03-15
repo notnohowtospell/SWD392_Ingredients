@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Admin Header</title>
+</head>
+<body>
+<div th:fragment="header">
+  <nav>
+    <a th:href="@{/dashboard}">Trang chủ</a> |
+    <a th:href="@{/admin/users}">Quản lý tài khoản</a> |
+    <a th:href="@{/ingredients}">Quản lý nguyên liệu</a> |
+    <a th:href="@{/logout}">Đăng xuất</a>
+  </nav>
+</div>
+</body>
+</html>

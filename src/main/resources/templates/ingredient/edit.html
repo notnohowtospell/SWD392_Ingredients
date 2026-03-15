@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Chỉnh sửa nguyên liệu</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f4f7;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #343a40;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+    }
+    main {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 32px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    form label {
+      display: block;
+      font-weight: 600;
+      margin: 12px 0 6px;
+      color: #444;
+    }
+    form input[type="text"],
+    form input[type="number"],
+    form select,
+    form textarea,
+    form input[type="file"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 15px;
+    }
+    form textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    form button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+    form button:hover {
+      background-color: #0056b3;
+    }
+    a.back-link {
+      display: inline-block;
+      margin-top: 20px;
+      text-align: center;
+      width: 100%;
+      text-decoration: none;
+      color: #007bff;
+      font-weight: 500;
+    }
+    a.back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h2>Chỉnh sửa Nguyên liệu</h2>
+</header>
+
+<main>
+  <form th:action="@{'/ingredients/edit/' + ${ingredient.ingredientId}}"
+        th:object="${ingredient}" method="post"
+        enctype="multipart/form-data" id="ingredientForm">
+
+    <input type="hidden" th:field="*{ingredientId}" />
+
+    <label>Tên nguyên liệu:</label>
+    <input type="text" th:field="*{name}" required/>
+
+    <label>Mô tả:</label>
+    <textarea th:field="*{description}"></textarea>
+
+    <label>Chọn ảnh:</label>
+    <input type="file" name="imageFile" accept="image/*"/>
+
+    <label>Giá:</label>
+    <input type="number" th:field="*{price}" step="0.01" required/>
+
+    <label>Số lượng:</label>
+    <input type="number" th:field="*{quantity}" min="0" required/>
+
+    <label>Danh mục:</label>
+    <select th:field="*{category.categoryId}">
+      <option th:each="cat : ${categories}"
+              th:value="${cat.categoryId}"
+              th:text="${cat.name}"
+              th:selected="${cat.categoryId} == ${ingredient.category.categoryId}">
+      </option>
+    </select>
+
+    <button type="submit">Cập nhật</button>
+  </form>
+
+  <a th:href="@{/ingredients}" class="back-link">← Quay lại danh sách</a>
+  <a th:href="@{/login}" class="back-link" style="color: #e74c3c;">Thoát</a>
+</main>
+</body>
+</html>

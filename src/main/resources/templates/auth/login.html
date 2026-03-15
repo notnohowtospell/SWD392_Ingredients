@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Đăng nhập</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        .login-container {
+            width: 360px;
+            margin: 100px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .login-container h2 {
+            text-align: center;
+            color: #1877f2;
+            margin-bottom: 24px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+        }
+
+        .btn-login {
+            width: 100%;
+            background-color: #1877f2;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            background-color: #166fe5;
+        }
+
+        .form-text {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .form-text a {
+            color: #1877f2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>Đăng nhập</h2>
+
+    <form method="post" th:action="@{/login}">
+        <div class="form-group">
+            <input type="text" name="username" placeholder="Tên đăng nhập" required />
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" placeholder="Mật khẩu" required />
+        </div>
+        <button type="submit" class="btn-login">Đăng nhập</button>
+    </form>
+
+    <div class="message" th:text="${error}"></div>
+    <div class="form-text">
+        <a href="/register">Tạo tài khoản mới</a>
+    </div>
+</div>
+</body>
+</html>

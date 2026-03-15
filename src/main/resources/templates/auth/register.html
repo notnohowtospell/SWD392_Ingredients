@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Đăng ký</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        .register-container {
+            width: 400px;
+            margin: 80px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .register-container h2 {
+            text-align: center;
+            color: #1877f2;
+            margin-bottom: 24px;
+            font-size: 26px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+        }
+
+        .btn-register {
+            width: 100%;
+            background-color: #42b72a;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        .btn-register:hover {
+            background-color: #36a420;
+        }
+
+        .form-text {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .form-text a {
+            color: #1877f2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .message {
+            text-align: center;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .message.error {
+            color: #dc3545;
+        }
+
+        .message.success {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+<div class="register-container">
+    <h2>Tạo tài khoản</h2>
+
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <div class="form-group">
+            <input type="text" th:field="*{username}" placeholder="Tên đăng nhập" required />
+        </div>
+        <div class="form-group">
+            <input type="email" th:field="*{email}" placeholder="Email" required />
+        </div>
+        <div class="form-group">
+            <input type="password" th:field="*{password}" placeholder="Mật khẩu" required />
+        </div>
+        <div class="form-group">
+            <input type="text" th:field="*{address}" placeholder="Địa chỉ" required />
+        </div>
+        <div class="form-group">
+            <input type="text" th:field="*{phoneNumber}" placeholder="Số điện thoại" required />
+        </div>
+        <button type="submit" class="btn-register">Đăng ký</button>
+    </form>
+
+    <div class="message error" th:if="${error}" th:text="${error}"></div>
+    <div class="message success" th:if="${message}" th:text="${message}"></div>
+
+    <div class="form-text">
+        <a href="/login">Quay lại đăng nhập</a>
+    </div>
+</div>
+</body>
+</html>

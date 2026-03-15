@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Customer Header</title>
+</head>
+<body>
+<div th:fragment="header">
+    <nav>
+        <a th:href="@{/search}">Trang chủ</a> |
+        <a th:href="@{/cart}">Giỏ hàng</a> |
+        <a th:href="@{/logout}">Đăng xuất</a>
+    </nav>
+</div>
+</body>
+</html>

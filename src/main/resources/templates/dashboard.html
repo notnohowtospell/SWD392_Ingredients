@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <style>
+        body {
+            background-color: #eef2f5;
+            font-family: Arial, sans-serif;
+        }
+
+        .dashboard-container {
+            max-width: 800px;
+            margin: 80px auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        .dashboard-container h1 {
+            color: #1877f2;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-container p {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .logout-button {
+            margin-top: 30px;
+            background-color: #e53935;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #c62828;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/dynamic-header :: header"></div>
+
+<div class="dashboard-container">
+    <h1>Chào mừng đến với Dashboard 🎉</h1>
+    <p>Bạn đã đăng nhập thành công.</p>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="logout-button">Đăng xuất</button>
+    </form>
+</div>
+</body>
+</html>
